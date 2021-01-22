@@ -54,7 +54,30 @@ class _EditScreenState extends State<EditScreen> {
     super.dispose();
   }
 
-  void _onDelete() {}
+  void _onDelete() async {
+    if (!_loadingDelete) {
+      try {
+        setState(() {
+          _loadingDelete = true;
+        });
+        await getRefFromUrl(widget.imageUrl)?.delete();
+        await tasks.doc(widget.id).delete();
+        Navigator.of(context).pop();
+      } catch (e) {
+        setState(() {
+          _loadingDelete = false;
+        });
+        _scaffoldKey.currentState.showSnackBar(
+          SnackBar(
+            content: Text(
+              "Error delete data ${e.toString()}",
+            ),
+          ),
+        );
+        print(e);
+      }
+    }
+  }
 
   _onEditTask(DateTime deadline, File file) async {
     if (!_loading && _formKey.currentState.validate()) {
@@ -101,7 +124,9 @@ class _EditScreenState extends State<EditScreen> {
         actions: [
           _loadingDelete
               ? CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation(Colors.white),
+                  valueColor: AlwaysStoppedAnimation(
+                    Colors.white,
+                  ),
                 )
               : IconButton(
                   icon: Icon(Icons.delete),
