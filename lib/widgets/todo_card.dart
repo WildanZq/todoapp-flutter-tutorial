@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class TodoCard extends StatelessWidget {
-  final String id;
   final String title;
   final String description;
   final DateTime deadline;
@@ -9,7 +8,6 @@ class TodoCard extends StatelessWidget {
 
   const TodoCard({
     Key key,
-    @required this.id,
     @required this.title,
     @required this.description,
     @required this.deadline,

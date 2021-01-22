@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todoapp/screens/add_screen.dart';
+import 'package:todoapp/screens/edit_screen.dart';
 import 'package:todoapp/screens/login_screen.dart';
 import 'package:todoapp/widgets/todo_card.dart';
 
@@ -67,7 +68,20 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  _goToEdit(QueryDocumentSnapshot document) {}
+  _goToEdit(QueryDocumentSnapshot documentSnapshot) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditScreen(
+          id: documentSnapshot.id,
+          title: documentSnapshot.data()['title'],
+          desc: documentSnapshot.data()['description'],
+          deadline: (documentSnapshot.data()['deadline'] as Timestamp).toDate(),
+          imageUrl: documentSnapshot.data()['attachment'],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +114,6 @@ class _HomeScreenState extends State<HomeScreen> {
             itemBuilder: (BuildContext context, int position) {
               QueryDocumentSnapshot document = list[position];
               return TodoCard(
-                id: document.id,
                 title: document.data()["title"],
                 description: document.data()["description"],
                 deadline: (document.data()["deadline"] as Timestamp).toDate(),

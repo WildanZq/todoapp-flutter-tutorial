@@ -90,8 +90,6 @@ class _TaskFormState extends State<TaskForm> {
     }
   }
 
-  void _onAdd() {}
-
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -113,7 +111,9 @@ class _TaskFormState extends State<TaskForm> {
             ),
             TextFormField(
               controller: widget.descController,
-              decoration: InputDecoration(labelText: 'Deskripsi'),
+              decoration: InputDecoration(
+                labelText: 'Deskripsi',
+              ),
               validator: (value) {
                 if (value.isEmpty) return 'Masukkan deskripsi';
                 return null;
