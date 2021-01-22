@@ -11,7 +11,7 @@ class AddScreen extends StatefulWidget {
 }
 
 class _AddScreenState extends State<AddScreen> {
-  final _picker = ImagePicker();
+  final ImagePicker _picker = ImagePicker();
   DateTime _deadline = DateTime.now();
   File _image;
 
@@ -119,6 +119,17 @@ class _AddScreenState extends State<AddScreen> {
                   onTap: _selectImage,
                   child: Text(_image != null ? _image.path : 'Pilih Gambar'),
                 ),
+                _image != null
+                    ? Padding(
+                        padding: EdgeInsets.only(top: 8),
+                        child: Center(
+                          child: Image.file(
+                            _image,
+                            height: 200,
+                          ),
+                        ),
+                      )
+                    : SizedBox(),
                 SizedBox(height: 18),
                 SizedBox(
                   width: MediaQuery.of(context).size.width,

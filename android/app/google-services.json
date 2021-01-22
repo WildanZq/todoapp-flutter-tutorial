@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "841677631572",
+    "project_id": "belajar-firebase-da822",
+    "storage_bucket": "belajar-firebase-da822.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841677631572:android:69d580edb71cb727ccfdc1",
+        "android_client_info": {
+          "package_name": "com.example.todoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "841677631572-81ie65ofs66re655voqen5noi2r5n3cp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.todoapp",
+            "certificate_hash": "a8a9ddae3338c5929ad834b0af73be7ca47f4461"
+          }
+        },
+        {
+          "client_id": "841677631572-su141t3roqmsocon2jr0gt087u9jh5em.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAD6-0LHfZKzlTSauSE6Zx27uoxkmgOzG4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "841677631572-su141t3roqmsocon2jr0gt087u9jh5em.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
