@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -20,13 +23,28 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final StreamController<QuerySnapshot> documentStream =
+      StreamController<QuerySnapshot>();
 
-  List _todoList = [
-    {'title': 'judul A', 'desc': 'deskripsi A'},
-    {'title': 'judul B'},
-    {'title': 'judul B'},
-    {'title': 'judul B'},
-  ];
+  @override
+  void initState() {
+    super.initState();
+    documentStream.addStream(FirebaseFirestore.instance
+        .collection('users')
+        .doc(_auth.currentUser.uid)
+        .collection('tasks')
+        .orderBy(
+          'deadline',
+          descending: false,
+        )
+        .snapshots());
+  }
+
+  @override
+  void dispose() {
+    documentStream.close();
+    super.dispose();
+  }
 
   void _goToAddScreen() {
     Navigator.of(context).push(
@@ -49,6 +67,8 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  _goToEdit(QueryDocumentSnapshot document) {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,15 +81,34 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemBuilder: (context, i) {
-          return TodoCard(
-            title: _todoList[i]['title'],
-            subtitle: _todoList[i]['desc'],
-            onTap: () {},
+      body: StreamBuilder<QuerySnapshot>(
+        stream: documentStream.stream,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                "failed to fetch data ${snapshot.error.toString()}",
+              ),
+            );
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          List<QueryDocumentSnapshot> list = snapshot.data.docs;
+          return ListView.builder(
+            itemCount: list.length,
+            itemBuilder: (BuildContext context, int position) {
+              QueryDocumentSnapshot document = list[position];
+              return TodoCard(
+                id: document.id,
+                title: document.data()["title"],
+                description: document.data()["description"],
+                deadline: (document.data()["deadline"] as Timestamp).toDate(),
+                onTap: () => _goToEdit(document),
+              );
+            },
           );
         },
-        itemCount: _todoList.length,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _goToAddScreen,

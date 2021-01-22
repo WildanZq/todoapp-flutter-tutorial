@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 
 class TodoCard extends StatelessWidget {
+  final String id;
   final String title;
-  final String subtitle;
+  final String description;
+  final DateTime deadline;
   final Function onTap;
 
   const TodoCard({
     Key key,
+    @required this.id,
     @required this.title,
-    @required this.subtitle,
+    @required this.description,
+    @required this.deadline,
     @required this.onTap,
   }) : super(key: key);
 
@@ -17,7 +21,7 @@ class TodoCard extends StatelessWidget {
     return ListTile(
       onTap: onTap,
       title: Text(title),
-      subtitle: subtitle != null ? Text(subtitle) : null,
+      subtitle: description != null ? Text(description) : null,
     );
   }
 }
